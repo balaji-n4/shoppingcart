@@ -24,7 +24,7 @@ public class TestNGProductController {
 
 	@Test
 	public void testAddItem() throws Exception {
-		
+
 		String url = "http://localhost:9090/products";
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
@@ -33,15 +33,15 @@ public class TestNGProductController {
 		product.setProdId("PROD-777");
 		product.setProdName("Laptop");
 		product.setPrice("100000");
-		
+
 		String inputJson = mapToJson(product);
 		HttpEntity<String> request = new HttpEntity<String>(inputJson, headers);
 		/*
-		 * String response = restTemplate.postForObject(url, request, String.class);
-		 * assertEquals(true, response.contains(""));
+		 * String response = restTemplate.postForObject(url, request,
+		 * String.class); assertEquals(true, response.contains(""));
 		 */
 	}
-	
+
 	@Test
 	public void testCancelOrderSuccess() throws Exception {
 
@@ -62,12 +62,12 @@ public class TestNGProductController {
 		restTemplate = new RestTemplate();
 		headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		
+
 		String response1 = restTemplate.getForObject(cancelUrl, String.class);
 		assertEquals(true, response.contains("Added Successfully"));
 
 	}
-	
+
 	@Test
 	public void testGetProductByIdSuccess() throws Exception {
 		String url = "http://localhost:9090/products";
@@ -78,7 +78,7 @@ public class TestNGProductController {
 		product.setProdId("PROD-2212");
 		product.setProdName("Keyboard");
 		product.setPrice("20000");
-		
+
 		String inputJson = mapToJson(product);
 		HttpEntity<String> request = new HttpEntity<String>(inputJson, headers);
 		String response = restTemplate.postForObject(url, request, String.class);
@@ -88,13 +88,13 @@ public class TestNGProductController {
 		restTemplate = new RestTemplate();
 		headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		
+
 		String response1 = restTemplate.getForObject(url1, String.class);
 		Product p = mapFromJson(response1, Product.class);
 		assertEquals(product.getProdId(), p.getProdId());
-		
+
 	}
-	
+
 	@Test
 	public void testGetAllProductsSuccess() throws Exception {
 		String url = "http://localhost:9090/products";
@@ -102,12 +102,12 @@ public class TestNGProductController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		Product[] prodList = restTemplate.getForObject(url, Product[].class);
-	    List<Product> pList= Arrays.asList(prodList);
-	    
-		assertEquals(true, pList.size()>0);
-		
+		List<Product> pList = Arrays.asList(prodList);
+
+		assertEquals(true, pList.size() > 0);
+
 	}
-	
+
 	@Test
 	public void testAddItemAndDeleteItem() throws Exception {
 
@@ -115,7 +115,7 @@ public class TestNGProductController {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		
+
 		Product product = new Product();
 		product.setProdId("PROD-2019");
 		product.setProdName("Laptop");
@@ -126,27 +126,22 @@ public class TestNGProductController {
 		// Create a product
 		String response = restTemplate.postForObject(url, request, String.class);
 		assertEquals(response, "Product Added Successfully,Product Id:  PROD-2019");
-		
+
 		Map<String, String> params = new HashMap<String, String>();
-	    params.put("prodId", product.getProdId());
-	    
-	    url = "http://localhost:9090/products/{prodId}";
-	    // Update product
-	    product.setProdName("NewLaptop");
-	    restTemplate.put(url, product, params);
-	    
-	    Product returnedProduct = restTemplate.getForObject(url, Product.class, params);
+		params.put("prodId", product.getProdId());
+
+		url = "http://localhost:9090/products/{prodId}";
+		// Update product
+		product.setProdName("NewLaptop");
+		restTemplate.put(url, product, params);
+
+		Product returnedProduct = restTemplate.getForObject(url, Product.class, params);
 		assertEquals(product.getProdId(), returnedProduct.getProdId());
 		assertEquals(product.getPrice(), returnedProduct.getPrice());
 		assertEquals(product.getProdName(), returnedProduct.getProdName());
-		
+
 		// Delete product
 		restTemplate.delete(url, params);
-		
-//		String response2 = restTemplate.getForObject(url, String.class, params);
-//		ResponseEntity<String> response2 = restTemplate.getForEntity(url, String.class, params);
-//		Assert.assertNotNull(response2);
-		
 
 	}
 
