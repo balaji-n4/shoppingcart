@@ -76,5 +76,15 @@ public class ProductDetailssRepo {
 	public Product getProductById(final String prodId) {
 		return rwExcelProduct.getProductById(prodId);
 	}
+	
+	/**
+	 * It will update a product details
+	 * 
+	 * @param pro
+	 * @return
+	 */
+	public String updateItem(final Product pro) {
+		return productExcelFile.updateItemInExcel("./src/main/resources/excel/product.xlsx", pro);
+	}
 
 }

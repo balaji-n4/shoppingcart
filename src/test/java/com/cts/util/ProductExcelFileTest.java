@@ -45,5 +45,15 @@ public class ProductExcelFileTest {
 		int rowIndex = 12;
 		productExcelFile.removeRow(sheet, rowIndex);
 	}*/
+	
+	@Test
+	public void updateItemInExcelTest(){
+		String fileName = "./src/main/resources/excel/product.xlsx";
+		Product pro = new Product();
+		pro.setPrice("89.56");
+		pro.setProdId("12");
+		pro.setProdName("CarBox");
+		assertNotNull( productExcelFile.updateItemInExcel(fileName, pro));
+	}
 
 }

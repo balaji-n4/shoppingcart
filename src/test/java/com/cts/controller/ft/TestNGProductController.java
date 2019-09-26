@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
@@ -104,6 +106,48 @@ public class TestNGProductController {
 	    
 		assertEquals(true, pList.size()>0);
 		
+	}
+	
+	@Test
+	public void testAddItemAndDeleteItem() throws Exception {
+
+		String url = "http://localhost:9090/products";
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
+		Product product = new Product();
+		product.setProdId("PROD-2019");
+		product.setProdName("Laptop");
+		product.setPrice("200000");
+
+		String inputJson = mapToJson(product);
+		HttpEntity<String> request = new HttpEntity<String>(inputJson, headers);
+		// Create a product
+		String response = restTemplate.postForObject(url, request, String.class);
+		assertEquals(response, "Product Added Successfully,Product Id:  PROD-2019");
+		
+		Map<String, String> params = new HashMap<String, String>();
+	    params.put("prodId", product.getProdId());
+	    
+	    url = "http://localhost:9090/products/{prodId}";
+	    // Update product
+	    product.setProdName("NewLaptop");
+	    restTemplate.put(url, product, params);
+	    
+	    Product returnedProduct = restTemplate.getForObject(url, Product.class, params);
+		assertEquals(product.getProdId(), returnedProduct.getProdId());
+		assertEquals(product.getPrice(), returnedProduct.getPrice());
+		assertEquals(product.getProdName(), returnedProduct.getProdName());
+		
+		// Delete product
+		restTemplate.delete(url, params);
+		
+//		String response2 = restTemplate.getForObject(url, String.class, params);
+//		ResponseEntity<String> response2 = restTemplate.getForEntity(url, String.class, params);
+//		Assert.assertNotNull(response2);
+		
+
 	}
 
 	private String mapToJson(Object obj) throws JsonProcessingException {

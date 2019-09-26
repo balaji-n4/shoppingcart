@@ -120,4 +120,23 @@ public class ProductDetailsController {
 		String response = orderService.save(order);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
+	
+	/**
+	 * This method is used for update product details.
+	 * 
+	 * 
+	 * @param product
+	 * @return
+	 */
+	@RequestMapping(value = "/{prodId}", method = RequestMethod.PUT)
+	public ResponseEntity updateProduct(@PathVariable("prodId") final String prodId, @Valid @RequestBody final Product product) {
+		Product existingObj = productDetailsService.getProductById(prodId);
+		if (existingObj != null) {
+			productDetailsService.updateItem(product);
+			return new ResponseEntity(product, HttpStatus.OK);
+		} else {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+			
+		}
+	}
 }

@@ -58,4 +58,14 @@ public class ProductDetailsService {
 	public Product getProductById(String productId) {
 		return repo.getProductById(productId);
 	}
+	
+	/**
+	 * It is used to update a product item into excel.
+	 * 
+	 * @param pro
+	 * @return
+	 */
+	public String updateItem(Product pro) {
+		return repo.updateItem(pro);
+	}
 }

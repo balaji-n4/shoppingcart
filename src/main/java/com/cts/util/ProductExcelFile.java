@@ -165,4 +165,66 @@ public class ProductExcelFile {
 		}
 		return "Deleted successfully";
 	}
+	
+	/**
+	 * This method is used for adding the product details into excel.
+	 * 
+	 * @param fileName
+	 * @param pro
+	 * @return
+	 */
+	@SuppressWarnings("resource")
+	public String updateItemInExcel(String fileName, Product pro) {
+		String response = null;
+		int updatedRowIndex = 0;
+		try {
+
+			Workbook workbook = new XSSFWorkbook(Files.newInputStream(Paths.get(fileName)));
+			Sheet dataSheet = workbook.getSheetAt(0);
+			Iterator<Row> iterator = dataSheet.iterator();
+
+			while (iterator.hasNext()) {
+
+				Row currentRow = iterator.next();
+				Iterator<Cell> cellIterator = currentRow.iterator();
+
+				while (cellIterator.hasNext()) {
+
+					Cell currentCell = cellIterator.next();
+
+					int columnIndex = currentCell.getColumnIndex();
+					int rowIndex = currentCell.getRowIndex();
+					if (rowIndex >= 0) {
+						if (columnIndex == 0 && currentCell.getStringCellValue().equals(pro.getProdId())) {
+							updatedRowIndex = rowIndex;
+						}
+					}
+				}
+			}
+
+			cellnum = 0;
+
+			Row row = dataSheet.getRow(updatedRowIndex);
+
+			Cell cell1 = row.getCell(cellnum++);
+
+			// cell1.setCellValue(pro.getProdId());
+
+			Cell cell2 = row.getCell(cellnum++);
+			cell2.setCellValue(pro.getProdName());
+
+			Cell cell3 = row.getCell(cellnum++);
+			cell3.setCellValue(pro.getPrice());
+
+			FileOutputStream out = new FileOutputStream(new File(fileName));
+			workbook.write(out);
+			out.close();
+			response = "Product Updated Successfully,Product Id:  " + pro.getProdId();
+		} catch (IOException e) {
+			LOGGER.log(Level.INFO, e.getMessage());
+			response = "Internal Server Error";
+
+		}
+		return response;
+	}
 }

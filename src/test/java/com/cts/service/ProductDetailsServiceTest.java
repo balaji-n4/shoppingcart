@@ -66,4 +66,14 @@ public class ProductDetailsServiceTest {
 		assertEquals(p.getProdName(), productDetailsService.getProductById("G23423").getProdName());
 		
 	}
+	
+	@Test
+	public void updateItemTest(){
+		Product pro = new Product();
+		pro.setPrice("234.56");
+		pro.setProdId("B34556");
+		pro.setProdName("Bottle");
+		when(repo.updateItem(pro)).thenReturn("Product Updated Successfully,Product Id: B34556");
+		assertEquals("Product Updated Successfully,Product Id: B34556", productDetailsService.addItem(pro));
+	}
 }

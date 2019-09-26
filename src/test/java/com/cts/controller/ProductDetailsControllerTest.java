@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -140,6 +141,29 @@ public class ProductDetailsControllerTest extends AbstractTest {
 		when(orderService.save(order)).thenReturn("User Order Placed Successfully");
 		ResponseEntity<String> response = productDetailsController.save(order);
 		assertEquals(HttpStatus.CREATED.value(), response.getStatusCodeValue());
+	}
+	
+	@Test
+	public void testUpdateProduct() {
+		Product product = new Product();
+		product.setProdId("PROD-321");
+		product.setProdName("HD-TV");
+		product.setPrice("1000.0");
+		when(productDetailsService.getProductById(Mockito.anyString())).thenReturn(product);
+		when(productDetailsService.addItem(Mockito.any(Product.class))).thenReturn("Product updated Successfully");
+		ResponseEntity<String> response = productDetailsController.updateProduct(product.getProdId(), product);
+		assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
+	}
+	
+	@Test
+	public void testUpdateProductFail() {
+		Product product = new Product();
+		product.setProdId("PROD-321");
+		product.setProdName("HD-TV");
+		product.setPrice("1000.0");
+		when(productDetailsService.getProductById(Mockito.anyString())).thenReturn(null);
+		ResponseEntity<String> response = productDetailsController.updateProduct(product.getProdId(), product);
+		assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCodeValue());
 	}
 	
 }
