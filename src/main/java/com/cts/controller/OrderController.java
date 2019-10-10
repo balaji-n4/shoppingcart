@@ -50,9 +50,23 @@ public class OrderController {
 	public ResponseEntity<Object> placeOrder(@RequestBody final Order order) {
 		Order savedOrder = orderService.placeOrder(order);
 		if (savedOrder == null) {
+			/**
+			 * This method is used for canceling the order if it the order is present in
+			 * the excel.
+			 * 
+			 * @param orderId
+			 * @return
+			 */
 			System.out.println("Placing order");
 			return new ResponseEntity("Unable to place order", HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
+			/**
+			 * This method is used for canceling the order if it the order is present in
+			 * the excel.
+			 * 
+			 * @param orderId
+			 * @return
+			 */
 			return new ResponseEntity("Order placed successfully. Order id is:" + order.getOrderId(), HttpStatus.OK);
 		}
 	}
@@ -69,8 +83,22 @@ public class OrderController {
 	public ResponseEntity<Object> cancelOrder(@PathVariable("orderId") final String orderId) {
 		String cancelledOrderId = orderService.cancelOrder(orderId);
 		if (cancelledOrderId == null) {
+			/**
+			 * This method is used for canceling the order if it the order is present in
+			 * the excel.
+			 * 
+			 * @param orderId
+			 * @return
+			 */
 			return new ResponseEntity("Order not found in the system", HttpStatus.NOT_FOUND);
 		} else {
+			/**
+			 * This method is used for canceling the order if it the order is present in
+			 * the excel.
+			 * 
+			 * @param orderId
+			 * @return
+			 */
 			return new ResponseEntity("Order with orderId : " + orderId + " cancelled successfully", HttpStatus.OK);
 		}
 	}
@@ -98,6 +126,13 @@ public class OrderController {
 	public ResponseEntity<Order> getOrderById(@PathVariable("orderId")final String orderId) {
 		Order order = orderService.getOrderById(orderId);
 		if (order == null) {
+			/**
+			 * This method is used for canceling the order if it the order is present in
+			 * the excel.
+			 * 
+			 * @param orderId
+			 * @return
+			 */
 			System.out.println("Get order by Id");
 			return new ResponseEntity(null, HttpStatus.NOT_FOUND);
 		} else {
