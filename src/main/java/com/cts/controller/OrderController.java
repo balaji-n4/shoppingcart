@@ -69,6 +69,12 @@ public class OrderController {
 	public ResponseEntity<Object> cancelOrder(@PathVariable("orderId") final String orderId) {
 		String cancelledOrderId = orderService.cancelOrder(orderId);
 		if (cancelledOrderId == null) {
+			/**
+			 * This method is used for getting the order by Id.
+			 * 
+			 * @param orderId
+			 * @return
+			 */
 			return new ResponseEntity("Order not found in the system", HttpStatus.NOT_FOUND);
 		} else {
 			return new ResponseEntity("Order with orderId : " + orderId + " cancelled successfully", HttpStatus.OK);
@@ -83,6 +89,12 @@ public class OrderController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping
 	public ResponseEntity<List<Order>> getAllOrders() {
+		/**
+		 * This method is used for getting the order by Id.
+		 * 
+		 * @param orderId
+		 * @return
+		 */
 		List<Order> orders = orderService.getAllOrders();
 		return new ResponseEntity(orders, HttpStatus.OK);
 	}
@@ -98,6 +110,12 @@ public class OrderController {
 	public ResponseEntity<Order> getOrderById(@PathVariable("orderId")final String orderId) {
 		Order order = orderService.getOrderById(orderId);
 		if (order == null) {
+			/**
+			 * This method is used for getting the order by Id.
+			 * 
+			 * @param orderId
+			 * @return
+			 */
 			System.out.println("Get order by Id");
 			return new ResponseEntity(null, HttpStatus.NOT_FOUND);
 		} else {
