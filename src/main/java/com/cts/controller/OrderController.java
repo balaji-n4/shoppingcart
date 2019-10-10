@@ -50,6 +50,7 @@ public class OrderController {
 	public ResponseEntity<Object> placeOrder(@RequestBody final Order order) {
 		Order savedOrder = orderService.placeOrder(order);
 		if (savedOrder == null) {
+			System.out.println("Placing order");
 			return new ResponseEntity("Unable to place order", HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
 			return new ResponseEntity("Order placed successfully. Order id is:" + order.getOrderId(), HttpStatus.OK);
